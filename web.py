@@ -2,19 +2,23 @@ import streamlit as st
 
 import functions as func
 
+user = st.experimental_get_query_params().get("user",["guest"])[0]
+filename = f"{user}_todos.txt"
 
-todos = func.get_todos()
+todos = func.get_todos(filename)
 
 def add_todo():
 
-    todo = st.session_state['new_todo']
-    if todo.strip():
+    todo = st.session_state['new_todo'].strip()
+    if todo:
         todos.append(todo + "\n")
-        func.write_todos(todos)
+        func.write_todos(todos,filename)
     st.session_state['new_todo'] = ""
 
 
-st.title("My Todo App")
+
+
+st.title(f"{user.capitalize()}'s Todo App")
 st.subheader("This is my Todo App.")
 st.write("This app is to increase productivity")
 
@@ -23,7 +27,7 @@ for index,todo in enumerate(todos):
     checkbox = st.checkbox(todo,key=key)
     if checkbox:
         todos.pop(index)
-        func.write_todos(todos)
+        func.write_todos(todos,filename)
         del st.session_state[key]
         st.rerun()
 st.text_input(label="Add a new Todo",label_visibility="collapsed",placeholder="Add new todo....",
