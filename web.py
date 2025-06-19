@@ -2,7 +2,7 @@ import streamlit as st
 
 import functions as func
 
-user = st.experimental_get_query_params().get("user",["guest"])[0]
+user = st.query_params().get("user",["guest"])[0]
 filename = f"{user}_todos.txt"
 
 todos = func.get_todos(filename)
