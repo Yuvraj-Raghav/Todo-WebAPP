@@ -14,7 +14,7 @@ todos = func.get_todos(filename)
 
 def add_todo():
 
-    todo = st.session_state['new_todo'].strip()
+    todo = st.session_state.get('new_todo','').strip()
     if todo:
         todos.append(todo + "\n")
         func.write_todos(todos,filename)
