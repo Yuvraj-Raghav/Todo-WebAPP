@@ -2,7 +2,12 @@ import streamlit as st
 
 import functions as func
 
-user = st.query_params().get("user",["guest"])[0]
+user = st.query_params.get("user", [None])[0]
+
+if not user:
+    user = st.text_input("Enter your name to get your personal todo list:")
+    if not user:
+        st.stop()
 filename = f"{user}_todos.txt"
 
 todos = func.get_todos(filename)
